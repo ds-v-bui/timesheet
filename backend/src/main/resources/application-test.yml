@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://db:3306/starterkit?zeroDateTimeBehavior=convertToNull
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: password

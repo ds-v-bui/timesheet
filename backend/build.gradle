@@ -1,0 +1,93 @@
+plugins {
+	id 'org.springframework.boot' version '2.3.5.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id 'java'
+	id 'com.diffplug.spotless' version '5.5.1'
+	id 'org.flywaydb.flyway' version '7.1.1'
+	id "org.sonarqube" version "3.0"
+}
+
+group = 'com.dsvn'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	runtimeOnly 'mysql:mysql-connector-java'
+
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation 'javax.xml.bind:jaxb-api'
+	implementation 'javax.validation:validation-api'
+
+	implementation 'com.opencsv:opencsv:5.3'
+
+	implementation 'org.apache.poi:poi-ooxml:4.1.2'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+	implementation 'org.modelmapper:modelmapper:2.3.0'
+
+	// aws
+	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.906')
+	implementation 'com.amazonaws:aws-java-sdk-ses'
+	implementation 'com.amazonaws:aws-java-sdk-s3'
+
+	implementation 'javax.mail:mail:1.4'
+
+	testImplementation('com.h2database:h2')
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+spotless {
+	java {
+		importOrder()
+
+		removeUnusedImports()
+
+		googleJavaFormat('1.8').aosp()
+	}
+}
+
+sonarqube {
+	properties {
+		property "sonar.host.url", "http://13.113.231.146/sonarqube"
+		property "sonar.login", "02cee692d5e6001333d67f4d99acd6a51a267998"
+	}
+}
+
+flyway {
+	def environment = System.getenv("ENV_MIGRATE") ?: "local"
+	switch(environment) {
+		case "local" :
+			url      = 'jdbc:mysql://localhost:3308/starterkit?zeroDateTimeBehavior=convertToNull'
+			user     = 'root'
+			password = 'password'
+			outOfOrder = true
+			break
+
+		case "test" :
+			url      = 'jdbc:mysql://db:3306/starterkit?zeroDateTimeBehavior=convertToNull'
+			user     = 'root'
+			password = 'password'
+			outOfOrder = true
+			break
+	}
+}

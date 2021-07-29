@@ -1,0 +1,48 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3308/starterkit?zeroDateTimeBehavior=convertToNull
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: password
+    hikari:
+      idle-timeout: 10000
+      maximum-pool-size: 8
+      max-lifetime: 600000
+
+  mvc:
+    throwExceptionIfNoHandlerFound: true
+
+  resources:
+    addMappings: false
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+    hibernate:
+      use-new-id-generator-mappings: false
+        
+app:
+  front-end-url: http://localhost:3000
+  cors:
+    allowOrigin:
+      - http://localhost:3000
+    maxAge: 3600
+  auth:
+    tokenSecret: 4pE8z3PBoHjnV1AhvGk+e8h2p+ShZpOnpr8cwHmMh1w=
+    tokenExpirationSec: 864000
+  passwordResetTokenExpirationSec: 3600
+  domainPattern: localhost
+  time_zone: UTC
+
+aws:
+  credentials:
+    accessKey: AKIAZVXBBCTWMSHJMLJA
+    secretKey: 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
+  region: us-east-1
+  s3:
+    bucket-name-public: dsvn-starterkit
+    bucket-name-public-access-url: https://dsvn-starterkit.s3.amazonaws.com/
